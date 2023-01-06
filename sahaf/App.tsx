@@ -1,5 +1,4 @@
 import React from 'react';
-import type {Node} from 'react';
 
 import {
   SafeAreaView,
@@ -19,15 +18,15 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import SignInScreen from './src/screens/SignInScreen';
-import SignUpScreen from './src/screens/SignUpScreen';
+import {NavigationContainer} from '@react-navigation/native';
 import Navigation from './src/navigation';
+import TabNavigator from './src/navigation/TabNavigator';
 
-const App: () => Node = () => {
-
+const App: () => any = () => {
+  let isAuthenticated = false;
   return (
     <SafeAreaView style={styles.root}>
-      <Navigation />
+        <Navigation />
     </SafeAreaView>
   );
 };
@@ -35,8 +34,8 @@ const App: () => Node = () => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#F9FBFC'
-  }
+    backgroundColor: '#F9FBFC',
+  },
 });
 
 export default App;

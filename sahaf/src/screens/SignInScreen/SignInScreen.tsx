@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
 import React from 'react'
-import CustomInput from '../../components/CustomInput'
 import { TextInput, HelperText, Button, Appbar } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
