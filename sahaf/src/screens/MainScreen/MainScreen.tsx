@@ -101,6 +101,8 @@ const MainScreen = () =>
               <FlatList
                 contentContainerStyle={{paddingBottom: 250}}
                 data={filteredBookData}
+                keyExtractor={item => item.book_id}
+                showsVerticalScrollIndicator={false}
                 //nestedScrollEnabled
                 renderItem={({item}) => (
                   <View>

@@ -6,14 +6,15 @@ import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import HomeScreen from '../screens/HomeScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import TabNavigator from './TabNavigator';
 import MainScreen from '../screens/MainScreen';
 import CategoriesScreen from '../screens/CategoriesScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import FavouritesScreen from '../screens/FavouritesScreen';
 import MyAccountScreen from '../screens/MyAccountScreen';
 import AuthorizedScreens from '../screens/AuthorizedScreens';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import TabNavigator from './TabNavigator';
+import BookScreen from '../screens/BookScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +25,7 @@ const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        {/* <Stack.Screen name="AuthorizedScreens" component={AuthorizedScreens} /> */}
+        <Stack.Screen name="BookScreen" component={BookScreen} />
         <Stack.Screen name="Maincreen" component={TabNavigator} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
@@ -34,7 +35,6 @@ const Navigation = () => {
         <Stack.Screen name="LibraryScreen" component={TabNavigator} />
         <Stack.Screen name="FavouritesScreen" component={TabNavigator} />
         <Stack.Screen name="MyAccountScreen" component={TabNavigator} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );

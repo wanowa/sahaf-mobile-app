@@ -29,7 +29,8 @@ const TabNavigator = () => {
         component={MainScreen}
         options={{
             tabBarLabel: 'Anasayfa',
-            tabBarLabelStyle: {fontSize: 14, marginBottom: 3},
+            tabBarLabelStyle: {fontSize: 14, marginBottom: 3, position: 'absolute'},
+            tabBarHideOnKeyboard: true,
             tabBarIcon: ({color}) => (
                 <Icon name='home-outline' color={color} size={40} />
             ),
