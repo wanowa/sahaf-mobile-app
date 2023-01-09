@@ -15,7 +15,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   return (
     <Tab.Navigator
-        initialRouteName="MainScreen"
+        initialRouteName="MainScreenTab"
         screenOptions={{
             tabBarStyle: {position: 'absolute', height: 60},
             headerShown: false,
@@ -25,11 +25,11 @@ const TabNavigator = () => {
         }}
     >
     <Tab.Screen
-        name="MainScreen" 
+        name="MainScreenTab" 
         component={MainScreen}
         options={{
             tabBarLabel: 'Anasayfa',
-            tabBarLabelStyle: {fontSize: 14, marginBottom: 3, position: 'absolute'},
+            tabBarLabelStyle: {fontSize: 14, marginBottom: 3},
             tabBarHideOnKeyboard: true,
             tabBarIcon: ({color}) => (
                 <Icon name='home-outline' color={color} size={40} />
@@ -37,10 +37,11 @@ const TabNavigator = () => {
         }}
     />
     <Tab.Screen
-        name="CategoriesScreen"
+        name="CategoriesScreenTab"
         component={CategoriesScreen}
         options={{
             tabBarLabel: 'Kategoriler',
+            tabBarHideOnKeyboard: true,
             tabBarLabelStyle: {fontSize: 14, marginBottom: 3},
             tabBarIcon: ({color}) => (
                 <Icon name='shape-outline' color={color} size={40} />
@@ -48,10 +49,11 @@ const TabNavigator = () => {
         }}
     />
     <Tab.Screen
-        name="LibraryScreen"
+        name="LibraryScreenTab"
         component={LibraryScreen}
         options={{
             tabBarLabel: 'Kitaplığım',
+            tabBarHideOnKeyboard: true,
             tabBarLabelStyle: {fontSize: 14, marginBottom: 3},
             tabBarIcon: ({color}) => (
                 <Icon name='library' color={color} size={40} />
@@ -59,10 +61,11 @@ const TabNavigator = () => {
         }}
     />
     <Tab.Screen
-        name="FavouritesScreen"
+        name="FavouritesScreenTab"
         component={FavouritesScreen}
         options={{
             tabBarLabel: 'Favorilerim',
+            tabBarHideOnKeyboard: true,
             tabBarLabelStyle: {fontSize: 14, marginBottom: 3},
             tabBarIcon: ({color}) => (
                 <Icon name='heart-outline' color={color} size={40} />
@@ -70,10 +73,11 @@ const TabNavigator = () => {
         }}
     />
     <Tab.Screen
-        name="MyAccountScreen"
+        name="MyAccountScreenTab"
         component={MyAccountScreen}
         options={{
             tabBarLabel: 'Hesabım',
+            tabBarHideOnKeyboard: true,
             tabBarLabelStyle: {fontSize: 14, marginBottom: 3},
             tabBarIcon: ({color}) => (
                 <Icon name='account-outline' color={color} size={40} />

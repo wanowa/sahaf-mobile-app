@@ -30,7 +30,7 @@ const MainScreen = () =>
   const [filteredBookData, setFilteredBookData] = useState<any[]>([]);
   const [search, setSearch] = useState('');
 
-  //http://192.168.1.103:5555/books/getOthersBook/2
+  //http://192.168.1.55:5555/books/getOthersBook/2
 
   useEffect(() => {
     getBookData();
@@ -39,7 +39,7 @@ const MainScreen = () =>
 
   const getBookData = async () => {
     axios
-      .get('http://192.168.1.103:5555/books/getOthersBook/2')
+      .get('http://192.168.1.55:5555/books/getOthersBook/2')
       .then(function (response) {
         // handle success
         const data = response.data;

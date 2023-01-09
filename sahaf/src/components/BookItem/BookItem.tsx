@@ -1,8 +1,17 @@
-import {ActivityIndicator, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Avatar} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 interface BookItemProps {
   userData: {
@@ -39,6 +48,8 @@ interface BookItemProps {
 }
 
 const BookItem = (props: any) => {
+  const navigation = useNavigation<any>();
+
   const [ratingData, setRatingData] = useState<any>([]);
   const [userData, setUserData] = useState<any>([]);
 
@@ -52,7 +63,7 @@ const BookItem = (props: any) => {
 
   const getUserData = async () => {
     axios
-      .get('http://192.168.1.103:5555/users/getUser/' + bookData.user_id)
+      .get('http://192.168.1.55:5555/users/getUser/' + bookData.user_id)
       .then(function (response) {
         // handle success
         const data = response.data;
@@ -65,12 +76,12 @@ const BookItem = (props: any) => {
       })
       .finally(function () {
         // always executed
-      }); 
+      });
   };
 
   const getRatingData = async () => {
     axios
-      .get('http://192.168.1.103:5555/ratings/getRating/' + bookData.user_id)
+      .get('http://192.168.1.55:5555/ratings/getRating/' + bookData.user_id)
       .then(function (response) {
         // handle success
         const data = response.data;
@@ -82,7 +93,7 @@ const BookItem = (props: any) => {
         console.log(error);
       })
       .finally(function () {
-        //setLoading(false);
+        // always executed
       });
   };
 
@@ -90,11 +101,18 @@ const BookItem = (props: any) => {
     getUserData();
     getRatingData();
     setLoading(false);
-    //console.log('User Data : ' + userData.username);
   }, []);
 
+  const onPress = () => {
+    navigation.navigate('BookScreen', {
+      bookData: bookData,
+      userData: userData,
+      ratingData: ratingData,
+    });
+  };
+
   return (
-    <View style={styles.root}>
+    <Pressable style={styles.root} onPress={onPress}>
       {isLoading ? (
         <ActivityIndicator size="large" />
       ) : (
@@ -102,62 +120,63 @@ const BookItem = (props: any) => {
           <Image
             style={styles.image}
             source={{
-              uri:
-                'https://covers.openlibrary.org/b/isbn/' +
-                bookData.book_isbn +
-                '-L.jpg',
+              uri: bookData.cover_photo,
             }}
           />
           <View style={styles.rightContainer}>
-            <Text style={[styles.title, {fontFamily: 'Inter-Regular'}]} numberOfLines={3}>
+            <Text
+              style={[styles.title, {fontFamily: 'Inter-Regular'}]}
+              numberOfLines={3}>
               {bookData.book_name}
             </Text>
             <View>
-              <Text style={styles.yayineviYazar}>Yazar: {bookData.author}</Text>
+              <Text style={styles.yayineviYazar}>Yazar:      {bookData.author}</Text>
               <Text style={styles.yayineviYazar}>
                 Yayınevi: {bookData.publisher}
               </Text>
             </View>
-
             <View style={styles.user}>
               <Avatar.Image
                 style={styles.avatar}
                 size={48}
                 source={{
-                  uri:
-                    'https://avatars.dicebear.com/api/avataaars/' +
-                    bookData.user_id +
-                    '.png',
+                  uri: userData.avatar,
                 }}
               />
               <View style={styles.rightUserContainer}>
                 <Text style={styles.username}>{userData.username}</Text>
-                <View style={styles.ratingsContainer}>
-                  <FontAwesome
-                    style={styles.star}
-                    name="star"
-                    size={20}
-                    color={'#e47911'}
-                  />
-                  {/* <FontAwesome style={styles.star} name="star" size={20} color={'#e47911'} />
-                  <FontAwesome style={styles.star} name="star" size={20} color={'#e47911'} />
-                  <FontAwesome style={styles.star} name="star" size={20} color={'#e47911'} />
-                  <FontAwesome
-                    style={styles.star}
-                    name="star-half-full"
-                    size={20}
-                    color={'#e47911'}
-                  /> 
-              */}
-                  <Text style={styles.ratingScore}>{ratingData.score}</Text>
-                  <Text style={styles.numOfRating}>({ratingData.number_of_rating})</Text>
-                </View>
+                {ratingData ? (
+                  <View style={styles.ratingsContainer}>
+                    <FontAwesome
+                      style={styles.star}
+                      name="star"
+                      size={20}
+                      color={'#F4C430'}
+                    />
+                    {/* <FontAwesome style={styles.star} name="star" size={20} color={'#e47911'} />
+                                  <FontAwesome style={styles.star} name="star" size={20} color={'#e47911'} />
+                                  <FontAwesome style={styles.star} name="star" size={20} color={'#e47911'} />
+                                  <FontAwesome
+                                    style={styles.star}
+                                    name="star-half-full"
+                                    size={20}
+                                    color={'#e47911'}
+                                  /> 
+                              */}
+                    <Text style={styles.ratingScore}>{ratingData.score}</Text>
+                    <Text style={styles.numOfRating}>
+                      ({ratingData.number_of_rating})
+                    </Text>
+                  </View>
+                ) : (
+                  <Text style={[styles.numOfRating, {marginLeft: 10}]}>Değerlendirme Yok</Text>
+                )}
               </View>
             </View>
           </View>
         </>
       )}
-    </View>
+    </Pressable>
   );
 };
 
@@ -202,8 +221,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   avatar: {
-    borderWidth: 1,
-    borderColor: '#d1d1d1',
     backgroundColor: '#fff',
   },
   rightUserContainer: {
@@ -224,16 +241,17 @@ const styles = StyleSheet.create({
   },
   star: {
     marginRight: 5,
-
   },
   ratingScore: {
     fontSize: 16,
     fontWeight: '600',
-    //color: '#25d6a2'
+    numberOfLines: 2,
+    color: '#F4C430'
   },
   numOfRating: {
     fontSize: 16,
     fontWeight: '400',
     marginLeft: 5,
+    color: '#929292',
   },
 });

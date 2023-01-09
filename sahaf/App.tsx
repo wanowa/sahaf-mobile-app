@@ -26,7 +26,9 @@ const App: () => any = () => {
   let isAuthenticated = false;
   return (
     <SafeAreaView style={styles.root}>
-      <Navigation />
+      <NavigationContainer>
+        <Navigation />
+      </NavigationContainer>
     </SafeAreaView>
   );
 };

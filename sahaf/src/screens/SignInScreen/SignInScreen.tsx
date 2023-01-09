@@ -46,7 +46,8 @@ const SignInScreen = () => {
                 password: password
             }
             console.log(data);
-            }
+        }
+        navigation.navigate('Tabs', {screen: 'MainScreen'});    // TODO authentication yapılacak
     }
 
     const onForgotPassword = () => {
