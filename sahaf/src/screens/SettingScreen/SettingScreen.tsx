@@ -1,8 +1,11 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {Appbar, List} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const {width, height} = Dimensions.get('window');
+
 
 const SettingScreen = () => {
   const navigation = useNavigation<any>();
@@ -24,27 +27,27 @@ const SettingScreen = () => {
   return (
     <View style={styles.root}>
       <Appbar.Header style={styles.appbar}>
-        <Appbar.BackAction onPress={onBackAction} size={30} />
+        <Appbar.BackAction onPress={onBackAction} size={width*0.075} />
         <Appbar.Content title="Ayarlar" style={styles.appbar_text} />
       </Appbar.Header>
       <View style={styles.digerSekmeler}>
         <List.Item
           style={styles.listItem}
-          title={<Text style={{fontSize: 20}}>Profil Bilgilerim</Text>}
-          left={props => <Icon {...props} name="account-outline" size={30} />}
+          title={<Text style={{fontSize: width*0.05}}>Profil Bilgilerim</Text>}
+          left={props => <Icon {...props} name="account-outline" size={width*0.075} />}
           onPress={onProfilBilgilerim}
         />
         <List.Item
           style={styles.listItem}
-          title={<Text style={{fontSize: 20}}>Şifreni Değiştir</Text>}
-          left={props => <Icon {...props} name="lock-outline" size={30} />}
+          title={<Text style={{fontSize: width*0.05}}>Şifreni Değiştir</Text>}
+          left={props => <Icon {...props} name="lock-outline" size={width*0.075} />}
           onPress={onSifreAyarlarim}
         />
         <List.Item
           style={styles.listItem}
-          title={<Text style={{fontSize: 20}}>Adres Bilgilerim</Text>}
+          title={<Text style={{fontSize: width*0.05}}>Adres Bilgilerim</Text>}
           left={props => (
-            <Icon {...props} name="map-marker-outline" size={30} />
+            <Icon {...props} name="map-marker-outline" size={width*0.075} />
           )}
           onPress={onAdresBilgilerim}
         />

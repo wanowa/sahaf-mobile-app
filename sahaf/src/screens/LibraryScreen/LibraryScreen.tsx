@@ -6,7 +6,6 @@ import axios from 'axios';
 import BookItem from '../../components/BookItem';
 
 const LibraryScreen = () => {
-  
   const navigation = useNavigation<any>();
   const [buttonValue, setButtonValue] = useState<any>('0');
   const [myBooks, setMyBooks] = useState<any>([]);
@@ -23,7 +22,14 @@ const LibraryScreen = () => {
 
   const getMyBooks = () => {
     axios
-      .get('http://192.168.1.55:5555/books/myBooks/1')
+      .get('http://192.168.1.55:5555/books/myBooks/1', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
+
       .then(function (response) {
         // handle success
         const data = response.data;
@@ -33,12 +39,17 @@ const LibraryScreen = () => {
         // handle error
         console.log(error);
       })
-      .finally(function () {
-      });
+      .finally(function () {});
   };
   const getSharedBooks = () => {
     axios
-      .get('http://192.168.1.55:5555/books/myBooksInMarket/1')
+      .get('http://192.168.1.55:5555/books/myBooksInMarket/1', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
       .then(function (response) {
         // handle success
         const data = response.data;
@@ -49,12 +60,17 @@ const LibraryScreen = () => {
         // handle error
         console.log(error);
       })
-      .finally(function () {
-      });
+      .finally(function () {});
   };
   const getUserData = async () => {
     axios
-      .get('http://192.168.1.55:5555/users/getUser/1')
+      .get('http://192.168.1.55:5555/users/getUser/1', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
       .then(function (response) {
         // handle success
         const data = response.data;
@@ -65,13 +81,18 @@ const LibraryScreen = () => {
         // handle error
         console.log(error);
       })
-      .finally(function () {
-      });
+      .finally(function () {});
   };
 
   const getRatingData = async () => {
     axios
-      .get('http://192.168.1.55:5555/ratings/getRating/1')
+      .get('http://192.168.1.55:5555/ratings/getRating/1', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
       .then(function (response) {
         // handle success
         const data = response.data;
@@ -82,8 +103,7 @@ const LibraryScreen = () => {
         // handle error
         console.log(error);
       })
-      .finally(function () {
-      });
+      .finally(function () {});
   };
 
   const onBackAction = () => {
@@ -91,7 +111,9 @@ const LibraryScreen = () => {
     // navigation.dispatch(popAction);
   };
 
-  const onAddBook = () => {};
+  const onAddBook = () => {
+    navigation.navigate('AddBookScreen');
+  };
 
   return (
     <View>
@@ -144,7 +166,7 @@ const LibraryScreen = () => {
         ) : (
           <View>
             <FlatList
-              contentContainerStyle={{paddingBottom: 250}}
+              contentContainerStyle={{paddingBottom: 350}}
               data={sharedBooks}
               keyExtractor={item => item.book_id}
               showsVerticalScrollIndicator={false}

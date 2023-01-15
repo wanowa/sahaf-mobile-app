@@ -1,8 +1,17 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {Appbar, Avatar, Button} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+const {width, height} = Dimensions.get('window');
 
 const BookScreen = (props: any) => {
   const {bookData, userData, ratingData} = props.route.params;
@@ -13,81 +22,73 @@ const BookScreen = (props: any) => {
     navigation.navigate('Tabs');
   };
 
-  const onTalepEt = () => {
-
-  }
-
+  const onTalepEt = () => {};
 
   return (
     <View>
       <Appbar.Header style={styles.appbar}>
-        <Appbar.BackAction onPress={onBackAction} size={30} />
+        <Appbar.BackAction onPress={onBackAction} size={width * 0.075} />
         {/* <Appbar.Content title="Geri Dön" style={styles.appbar_text} /> */}
       </Appbar.Header>
-      <View style={styles.root}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: bookData.cover_photo,
-          }}
-        />
-        <Text style={styles.title}>{bookData.book_name}</Text>
-        <View style={styles.yayineviYazarContainer}>
-          <Text style={styles.yayineviYazar}>Yazar: {bookData.author}</Text>
-          <Text style={styles.yayineviYazar}>
-            Yayınevi: {bookData.publisher}
-          </Text>
-        </View>
-        <View style={styles.user}>
-          <Avatar.Image
-            style={styles.avatar}
-            size={48}
+      <ScrollView>
+        <View style={styles.root}>
+          <Image
+            style={styles.image}
             source={{
-              uri: userData.avatar,
+              uri: bookData.cover_photo,
             }}
           />
-          <View style={styles.rightUserContainer}>
-            <Text style={styles.username}>{userData.username}</Text>
-            {ratingData ? (
-              <View style={styles.ratingsContainer}>
-                <FontAwesome
-                  style={styles.star}
-                  name="star"
-                  size={20}
-                  color={'#e47911'}
-                />
-                {/* <FontAwesome style={styles.star} name="star" size={20} color={'#e47911'} />
-                                  <FontAwesome style={styles.star} name="star" size={20} color={'#e47911'} />
-                                  <FontAwesome style={styles.star} name="star" size={20} color={'#e47911'} />
-                                  <FontAwesome
-                                    style={styles.star}
-                                    name="star-half-full"
-                                    size={20}
-                                    color={'#e47911'}
-                                  /> 
-                              */}
-                <Text style={styles.ratingScore}>{ratingData.score}</Text>
-                <Text style={styles.numOfRating}>
-                  ({ratingData.number_of_rating})
-                </Text>
-              </View>
-            ) : (
-              <Text style={{marginLeft: 10}}>Değerlendirme Yok</Text>
-            )}
+          <View style={styles.bookInfoContainer}>
+            <Text style={styles.title}>{bookData.book_name}</Text>
+            <View style={styles.yayineviYazarContainer}>
+              <Text style={styles.yayineviYazar}>Yazar: {bookData.author}</Text>
+              <Text style={styles.yayineviYazar}>
+                Yayınevi: {bookData.publisher}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.user}>
+            <Avatar.Image
+              style={styles.avatar}
+              size={width * 0.15}
+              source={{
+                uri: userData.avatar,
+              }}
+            />
+            <View style={styles.rightUserContainer}>
+              <Text style={styles.username}>{userData.username}</Text>
+              {ratingData ? (
+                <View style={styles.ratingsContainer}>
+                  <FontAwesome
+                    style={styles.star}
+                    name="star"
+                    size={width * 0.05}
+                    color={'#e47911'}
+                  />
+                  <Text style={styles.ratingScore}>{ratingData.score}</Text>
+                  <Text style={styles.numOfRating}>
+                    ({ratingData.number_of_rating})
+                  </Text>
+                </View>
+              ) : (
+                <Text style={{marginLeft: 10}}>Değerlendirme Yok</Text>
+              )}
+            </View>
           </View>
         </View>
-      </View>
-      <View>
-        <Button
-          style={styles.button}
-          labelStyle={{fontSize: 20}}
-          children="Talep Et"
-          mode="text"
-          buttonColor="#25d6a2"
-          textColor="white"
-          onPress={onTalepEt}
-        />
-      </View>
+        <View style={{paddingBottom: 100, marginTop: 20}}>
+          <Button
+            style={styles.button}
+            labelStyle={{fontSize: width * 0.05}}
+            children="Talep Et"
+            mode="text"
+            buttonColor="#25d6a2"
+            textColor="white"
+            onPress={onTalepEt}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -95,6 +96,12 @@ const BookScreen = (props: any) => {
 export default BookScreen;
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    // paddingBottom: 250,
+    width: '100%',
+    backgroundColor: '#fbfbfb'
+  },
   appbar: {
     margin: 0,
     marginBottom: 0,
@@ -104,47 +111,53 @@ const styles = StyleSheet.create({
   appbar_text: {
     marginLeft: 10,
   },
-  root: {
-    width: '100%',
-  },
   image: {
-    width: 300,
-    height: 450,
+    width: width * 0.75,
+    height: height * 0.7,
     marginVertical: 10,
     resizeMode: 'contain',
     alignSelf: 'center',
     //flex: 4,
   },
   title: {
-    fontSize: 20,
+    fontSize: width * 0.0625,
     fontWeight: '600',
     color: '#000',
     //marginLeft: 50,
     textAlign: 'center',
+    alignSelf: 'flex-start',
+    paddingLeft: 10,
+
 
     // marginBottom: 5,
+  },
+  bookInfoContainer: {
+    marginTop: 10,
+    backgroundColor: 'white',
+    width: '100%',
+    alignSelf: 'flex-start',
   },
   yayineviYazarContainer: {
     padding: 10,
     //flex: 7,
     justifyContent: 'space-between',
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
   },
 
   yayineviYazar: {
-    fontSize: 14,
+    fontSize: width * 0.044,
     fontWeight: '400',
     color: '#000',
   },
   user: {
     flexDirection: 'row',
-    marginTop: 5,
+    marginTop: 15,
     alignSelf: 'flex-start',
-    marginLeft: 60,
+    backgroundColor: 'white',
+    width: '100%',
+    padding: 10,
   },
   avatar: {
-    borderWidth: 1,
-    borderColor: '#d1d1d1',
     backgroundColor: '#fff',
   },
   rightUserContainer: {
@@ -152,7 +165,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontWeight: '600',
-    fontSize: 16,
+    fontSize: width * 0.05,
     color: '#000',
     //textAlignVertical: 'center',
     marginLeft: 10,
@@ -167,20 +180,22 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   ratingScore: {
-    fontSize: 16,
+    fontSize: width * 0.05,
     fontWeight: '600',
+    color: '#e47911',
     //color: '#25d6a2'
   },
   numOfRating: {
-    fontSize: 16,
+    fontSize: width * 0.05,
     fontWeight: '400',
     marginLeft: 5,
+    color: '#a4a4a4',
   },
   button: {
     marginVertical: 10,
     borderColor: '#25D6A2',
     width: '80%',
     alignSelf: 'center',
-    fontSize: 20,
-},
+    fontSize: width * 0.05,
+  },
 });

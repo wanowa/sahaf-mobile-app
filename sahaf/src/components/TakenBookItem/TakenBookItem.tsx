@@ -1,6 +1,5 @@
 import {
   ActivityIndicator,
-  Dimensions,
   Image,
   Pressable,
   StyleSheet,
@@ -13,10 +12,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-
-
-const { width, height } = Dimensions.get('window')
-
 
 interface BookItemProps {
   userData: {
@@ -52,23 +47,42 @@ interface BookItemProps {
   };
 }
 
-const BookItem = (props: any) => {
+const TakenBookItem = (props: any) => {
   const navigation = useNavigation<any>();
 
+  const [bookData, setBookData] = useState<any>([]);
   const [ratingData, setRatingData] = useState<any>([]);
   const [userData, setUserData] = useState<any>([]);
 
   const [isLoading, setLoading] = useState(true);
 
-  const {bookData} = props;
+  const {takenBookData} = props;
 
-  //console.log('User Data : ' + userData);
-  //console.log('Book Data : ' + bookData);
-  //console.log('Rating Data : ' + ratingData);
+  const getBookData = async () => {
+    axios
+      .get('http://192.168.1.55:5555/books/getBook/' + takenBookData.book_id, {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
+      .then(function (response) {
+        // handle success
+        const data = response.data;
+        setBookData(data);
+        //console.log(data);
+      })
+      .catch((errors: any) => {
+        // handle error
+        console.log(errors);
+      })
+      .finally(function () {});
+  };
 
   const getUserData = async () => {
     axios
-      .get('http://192.168.1.55:5555/users/getUser/' + bookData.user_id, {
+      .get('http://192.168.1.55:5555/users/getUser/' + takenBookData.giver_id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -92,13 +106,15 @@ const BookItem = (props: any) => {
 
   const getRatingData = async () => {
     axios
-      .get('http://192.168.1.55:5555/ratings/getRating/' + bookData.user_id, {
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Expires': '0',
-        },
-      })
+      .get(
+        'http://192.168.1.55:5555/ratings/getRating/' + takenBookData.giver_id, {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+          },
+        }
+      )
       .then(function (response) {
         // handle success
         const data = response.data;
@@ -115,79 +131,79 @@ const BookItem = (props: any) => {
   };
 
   useEffect(() => {
+    getBookData();
     getUserData();
     getRatingData();
     setLoading(false);
   }, []);
 
-  const onPress = () => {
-    navigation.navigate('BookScreen', {
-      bookData: bookData,
-      userData: userData,
-      ratingData: ratingData,
-    });
-  };
-
   return (
-    <Pressable style={styles.root} onPress={onPress}>
+    <View>
       {isLoading ? (
         <ActivityIndicator size="large" />
       ) : (
         <>
-          <Image
-            style={styles.image}
-            source={{
-              uri: bookData.cover_photo,
-            }}
-          />
-          <View style={styles.rightContainer}>
-            <Text
-              style={[styles.title, {fontFamily: 'Inter-Regular'}]}
-              numberOfLines={3}>
-              {bookData.book_name}
-            </Text>
-            <View>
-              <Text style={styles.yayineviYazar}>Yazar:      {bookData.author}</Text>
-              <Text style={styles.yayineviYazar}>
-                Yayınevi: {bookData.publisher}
+          <Text>{takenBookData.deal_date}</Text>
+          <View style={styles.root}>
+            <Image
+              style={styles.image}
+              source={{
+                uri: bookData.cover_photo,
+              }}
+            />
+            <View style={styles.rightContainer}>
+              <Text
+                style={[styles.title, {fontFamily: 'Inter-Regular'}]}
+                numberOfLines={3}>
+                {bookData.book_name}
               </Text>
-            </View>
-            <View style={styles.user}>
-              <Avatar.Image
-                style={styles.avatar}
-                size={48}
-                source={{
-                  uri: userData.avatar,
-                }}
-              />
-              <View style={styles.rightUserContainer}>
-                <Text style={styles.username}>{userData.username}</Text>
-                {ratingData ? (
-                  <View style={styles.ratingsContainer}>
-                    <FontAwesome
-                      style={styles.star}
-                      name="star"
-                      size={20}
-                      color={'#F4C430'}
-                    />
-                    <Text style={styles.ratingScore}>{ratingData.score}</Text>
-                    <Text style={styles.numOfRating}>
-                      ({ratingData.number_of_rating})
+              <View>
+                <Text style={styles.yayineviYazar}>
+                  Yazar: {bookData.author}
+                </Text>
+                <Text style={styles.yayineviYazar}>
+                  Yayınevi: {bookData.publisher}
+                </Text>
+              </View>
+              <View style={styles.user}>
+                <Avatar.Image
+                  style={styles.avatar}
+                  size={48}
+                  source={{
+                    uri: userData.avatar,
+                  }}
+                />
+                <View style={styles.rightUserContainer}>
+                  <Text style={styles.username}>{userData.username}</Text>
+                  {ratingData ? (
+                    <View style={styles.ratingsContainer}>
+                      <FontAwesome
+                        style={styles.star}
+                        name="star"
+                        size={20}
+                        color={'#F4C430'}
+                      />
+                      <Text style={styles.ratingScore}>{ratingData.score}</Text>
+                      <Text style={styles.numOfRating}>
+                        ({ratingData.number_of_rating})
+                      </Text>
+                    </View>
+                  ) : (
+                    <Text style={[styles.numOfRating, {marginLeft: 10}]}>
+                      Değerlendirme Yok
                     </Text>
-                  </View>
-                ) : (
-                  <Text style={[styles.numOfRating, {marginLeft: 10}]}>Değerlendirme Yok</Text>
-                )}
+                  )}
+                </View>
               </View>
             </View>
           </View>
         </>
       )}
-    </Pressable>
+    </View>
   );
 };
 
-export default BookItem;
+export default TakenBookItem;
 
 const styles = StyleSheet.create({
   root: {
@@ -200,14 +216,14 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   image: {
-    width: width * 0.25,
-    height: width * 0.375,
+    width: 100,
+    height: 150,
     marginVertical: 10,
     resizeMode: 'contain',
     flex: 4,
   },
   title: {
-    fontSize: width * 0.045,
+    fontSize: 18,
     fontWeight: '700',
     color: '#000',
     //fontFamily: 'Inter-Regular',
@@ -219,7 +235,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   yayineviYazar: {
-    fontSize: width * 0.035,
+    fontSize: 14,
     fontWeight: '400',
     color: '#000',
   },
@@ -235,7 +251,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontWeight: '600',
-    fontSize: width * 0.04,
+    fontSize: 16,
     color: '#000',
     //textAlignVertical: 'center',
     marginLeft: 10,
@@ -250,13 +266,13 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   ratingScore: {
-    fontSize: width * 0.04,
+    fontSize: 16,
     fontWeight: '600',
     numberOfLines: 2,
-    color: '#F4C430'
+    color: '#F4C430',
   },
   numOfRating: {
-    fontSize: width * 0.04,
+    fontSize: 16,
     fontWeight: '400',
     marginLeft: 5,
     color: '#929292',

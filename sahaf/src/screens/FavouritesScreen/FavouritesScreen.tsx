@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import BookItem from '../../components/BookItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import GetBookData from '../GetBookData';
 
 
 const FavouritesScreen = () => {
@@ -21,7 +20,13 @@ const FavouritesScreen = () => {
 
   const getBookData = async () => {
     axios
-      .get('http://192.168.1.55:5555/favourites/getFavourites/1')
+      .get('http://192.168.1.55:5555/favourites/getFavourites/1', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
       .then(function (response) {
         // handle success
         const data = response.data;

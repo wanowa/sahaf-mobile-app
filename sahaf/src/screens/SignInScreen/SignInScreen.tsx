@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, Image, ScrollView, Dimensions } from 'react-native'
 import React from 'react'
 import { TextInput, HelperText, Button, Appbar } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Form } from 'react-final-form';
 
+
+const { width, height } = Dimensions.get('window')
 
 const SignInScreen = () => {
 
@@ -65,7 +67,7 @@ const SignInScreen = () => {
         <SafeAreaProvider>
             <View>
                 <Appbar.Header style={styles.appbar}>
-                    <Appbar.BackAction onPress={onBackAction} size={30} />
+                    <Appbar.BackAction onPress={onBackAction} size={width*0.075} />
                     <Appbar.Content title="Giriş Yap" style={styles.appbar_text}/>
                 </Appbar.Header>
             
@@ -137,10 +139,11 @@ const styles = StyleSheet.create({
         margin: 0,
         marginBottom: 0,
         width: '100%',
-        zIndex: 1
+        zIndex: 1,
+        
     },
     appbar_text: {
-        marginLeft: 10
+        marginLeft: 10,
     }
 
 

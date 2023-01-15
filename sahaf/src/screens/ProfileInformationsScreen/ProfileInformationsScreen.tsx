@@ -28,7 +28,13 @@ const ProfileInformationsScreen = () => {
 
   const getUserData = async () => {
     axios
-      .get('http://192.168.1.55:5555/users/getUser/1')
+      .get('http://192.168.1.55:5555/users/getUser/1', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
       .then(function (response) {
         // handle success
         const data = response.data;

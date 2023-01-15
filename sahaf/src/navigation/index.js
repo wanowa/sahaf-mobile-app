@@ -15,6 +15,12 @@ import ProfileInformationsScreen from '../screens/ProfileInformationsScreen';
 import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 import AddressSettingsScreen from '../screens/AddressSettingsScreen';
 import SettingScreen from '../screens/SettingScreen';
+import TakenBooksScreen from '../screens/TakenBooksScreen';
+import GivenBooksScreen from '../screens/GivenBooksScreen';
+import DemandsScreen from '../screens/DemandsScreen';
+import DemandedsScreen from '../screens/DemandedsScreen';
+import AddBookScreen from '../screens/AddBookScreen';
+import CameraScreen from '../screens/CameraScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +37,12 @@ const Navigation = () => {
       <Stack.Screen name="ProfileInformationsScreen" component={ProfileInformationsScreen} />
       <Stack.Screen name="ChangePasswordScreen" component={ChangePasswordScreen} />
       <Stack.Screen name="AddressSettingsScreen" component={AddressSettingsScreen} />
+      <Stack.Screen name="TakenBooksScreen" component={TakenBooksScreen} />
+      <Stack.Screen name="GivenBooksScreen" component={GivenBooksScreen} />
+      <Stack.Screen name="DemandsScreen" component={DemandsScreen} />
+      <Stack.Screen name="DemandedsScreen" component={DemandedsScreen} />
+      <Stack.Screen name="AddBookScreen" component={AddBookScreen} />
+      <Stack.Screen name="CameraScreen" component={CameraScreen} />
     </Stack.Navigator>
   );
 };

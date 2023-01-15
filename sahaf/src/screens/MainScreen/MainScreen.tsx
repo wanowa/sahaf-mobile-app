@@ -39,7 +39,13 @@ const MainScreen = () =>
 
   const getBookData = async () => {
     axios
-      .get('http://192.168.1.55:5555/books/getOthersBook/2')
+      .get('http://192.168.1.55:5555/books/getOthersBook/1', {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
       .then(function (response) {
         // handle success
         const data = response.data;
