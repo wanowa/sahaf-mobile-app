@@ -1,4 +1,4 @@
-import {Alert, Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Dimensions, Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
@@ -6,6 +6,8 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {Appbar, Button, HelperText, TextInput} from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
+
+const {width, height} = Dimensions.get('window');
 
 const AddBookScreen = () => {
   const items = [
@@ -155,7 +157,13 @@ const AddBookScreen = () => {
     } else {
       setIsCategoryEmpty(false);
     }
-
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     if (
       !isBookNameEmpty &&
       !isAuthorEmpty &&
@@ -178,7 +186,7 @@ const AddBookScreen = () => {
         description: '',
         is_in_market: 0,
         publisher: publisher,
-        user_id: 1,
+        user_id: id,
       };
       console.log('-----153' + items[category - 1].label + '-----');
       const category_name = items[category - 1].label;
@@ -201,55 +209,13 @@ const AddBookScreen = () => {
   };
 
   const add_book = (book: any, category_name: any) => {
-    // fetch('http://192.168.43.55:5555/books/addBook', {
-    //   method: 'POST',
-    //   body: JSON.stringify({
-    //     category_name: category_name,
-    //     author: author,
-    //     book_id: 0,
-    //     book_isbn: bookIsbn,
-    //     book_name: book_name,
-    //     category_id: category,
-    //     cover_photo: '',
-    //     description: '',
-    //     is_in_market: 0,
-    //     publisher: publisher,
-    //     user_id: 1,
-    //   }),
-    //   headers: {
-    //     'Content-type': 'application/json',
-    //   },
-    // })
-    //   .then(response => response.json())
-    //   .then(json => console.log(json));
-
-    // axios({
-    //   method: 'post',
-    //   url: 'http://192.168.43.55:5555/books/addBook',
-    //   data: {
-    //     category_name: JSON.stringify(category_name),
-    //     book: JSON.stringify(book),
-    //   },
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // })
-    //   .then(function (response) {
-    //     console.log(response.data);
-    //     console.log(response.status);
-    //     console.log(response.statusText);
-    //     if (response.data.status === 'success') {
-    //       navigation.navigate('Tabs', {screen: 'LibraryScreen'});
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-
-
-    // http://192.168.43.55:5555/books/addBook?category_name=" + category_name -H "accept: */*" -H "Content-Type: application/json" -d "{ \"author\": \"Arthur\", \"book_id\": 0, \"book_isbn\": \"9786053480563\", \"book_name\": \"Sherlock\", \"category_id\": 0, \"cover_photo\": \"\", \"description\": \"\", \"is_in_market\": 0, \"publisher\": \"Martı\", \"user_id\": 1}
-
-
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
       .post(
         'http://192.168.43.55:5555/books/addBook?category_name=' + category_name,
@@ -263,7 +229,7 @@ const AddBookScreen = () => {
           description: '',
           is_in_market: 0,
           publisher: publisher,
-          user_id: 1,
+          user_id: id,
         })
       .then(
         response => {

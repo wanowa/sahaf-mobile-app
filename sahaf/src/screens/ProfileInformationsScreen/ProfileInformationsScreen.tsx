@@ -1,11 +1,11 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import { Appbar, Button, TextInput } from 'react-native-paper';
 import axios from 'axios';
 import { withRepeat } from 'react-native-reanimated';
 
-
+const {width, height} = Dimensions.get('window');
 
 const ProfileInformationsScreen = () => {
 
@@ -31,8 +31,15 @@ const ProfileInformationsScreen = () => {
   }
 
   const getUserData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/users/getUser/1', {
+      .get('http://192.168.43.55:5555/users/getUser/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -70,7 +77,7 @@ const ProfileInformationsScreen = () => {
   }
 
   useEffect  (  () => {
-        console.log('ProfileInformationScreen useEffect');   
+        console.log('ProfileInformationScreen useEffect');
         getUserData()
         
         setUsername(userData.username);

@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Dimensions,
   Image,
   Pressable,
   StyleSheet,
@@ -12,6 +13,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+
+const {width, height} = Dimensions.get('window');
 
 const DemandBookItem = (props: any) => {
   const navigation = useNavigation<any>();
@@ -107,11 +110,18 @@ const DemandBookItem = (props: any) => {
   };
 
   const onCancel = () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     console.log('onCancel');
 
     axios
       .post(
-        'http://192.168.43.55:5555/demands/undemandBook?bookId=' + bookData.book_id + '&userId=1')
+        'http://192.168.43.55:5555/demands/undemandBook?bookId=' + bookData.book_id + '&userId=' + id)
       .then(
         response => {
           console.log(response.data);

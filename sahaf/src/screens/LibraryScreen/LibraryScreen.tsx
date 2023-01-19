@@ -1,9 +1,11 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Appbar, SegmentedButtons} from 'react-native-paper';
 import {useNavigation, StackActions, useIsFocused} from '@react-navigation/native';
 import axios from 'axios';
 import BookItem from '../../utils/BookItem';
+
+const {width, height} = Dimensions.get('window');
 
 const LibraryScreen = () => {
 
@@ -25,8 +27,15 @@ const LibraryScreen = () => {
   }, [buttonValue, isFocused]);
 
   const getMyBooks = () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/books/myBooks/1', {
+      .get('http://192.168.43.55:5555/books/myBooks/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -46,8 +55,15 @@ const LibraryScreen = () => {
       .finally(function () {});
   };
   const getSharedBooks = () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/books/myBooksInMarket/1', {
+      .get('http://192.168.43.55:5555/books/myBooksInMarket/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -67,8 +83,15 @@ const LibraryScreen = () => {
       .finally(function () {});
   };
   const getUserData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/users/getUser/1', {
+      .get('http://192.168.43.55:5555/users/getUser/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -89,8 +112,15 @@ const LibraryScreen = () => {
   };
 
   const getRatingData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/ratings/getRating/1', {
+      .get('http://192.168.43.55:5555/ratings/getRating/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',

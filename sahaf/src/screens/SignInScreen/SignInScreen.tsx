@@ -7,17 +7,20 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {TextInput, HelperText, Button, Appbar} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {Form} from 'react-final-form';
 import axios from 'axios';
+//import Context from '../../Context/context';
 
 const {width, height} = Dimensions.get('window');
 
 const SignInScreen = () => {
+  //const value = useContext(MyContext);
+
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isEmailValid, setIsEmailValid] = React.useState(false);
@@ -32,16 +35,17 @@ const SignInScreen = () => {
 
   let isPasswordEmpty = password == '';
 
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re =
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const onSignIn = () => {
-    console.log('geldi');
+    console.log('------' + width + ' ' + height + '------');
     setTriggered(!triggered);
     //console.log(email + ' ' + password);
     //console.log(isEmailValid + ' ' + password != '');
     if (re.test(email) && password != '') {
       console.log('icerde');
-        console.log('email = ' + email + ' password = ' + password);
+      console.log('email = ' + email + ' password = ' + password);
       axios
         .post(
           'http://192.168.43.55:5555/users/isUserExist?email=' +
@@ -55,11 +59,10 @@ const SignInScreen = () => {
             console.log(data);
             if (data > 0) {
               setUserId(data);
-              navigation.navigate( 'Tabs', {
-                    screen: 'MainScreen',
-                    params: {userId: userId},
-                }
-              );
+              navigation.navigate('Tabs', {
+                screen: 'MainScreen',
+                params: {userId: userId},
+              });
             } else {
               Alert.alert('Hata', 'Email veya şifre hatalı', [
                 {text: 'Tamam', onPress: () => console.log('Tamam')},

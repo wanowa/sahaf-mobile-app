@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 //import { FlatList } from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
@@ -16,6 +17,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {useNavigation, NavigationContainer, useIsFocused} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
+const {width, height} = Dimensions.get('window');
 
 const MainScreen = (props: any) => 
 {
@@ -37,12 +39,19 @@ const MainScreen = (props: any) =>
   useEffect(() => {
     getBookData();
     setLoading(false);
-  }, [isFocused]);
+  }, [isFocused, bookData]);
 
   const getBookData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     //console.log('----' + userId + '----');
     axios
-      .get('http://192.168.43.55:5555/books/getOthersBook/1', {
+      .get('http://192.168.43.55:5555/books/getOthersBook/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -81,8 +90,6 @@ const MainScreen = (props: any) =>
       setFilteredBookData(newData);
       setSearch(text);
     } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
       setFilteredBookData(bookData);
       setSearch(text);
     }

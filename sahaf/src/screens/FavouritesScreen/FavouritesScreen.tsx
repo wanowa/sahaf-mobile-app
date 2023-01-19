@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Appbar } from 'react-native-paper';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import BookItem from '../../utils/BookItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+const {width, height} = Dimensions.get('window');
 
 const FavouritesScreen = () => {
   
@@ -23,8 +24,15 @@ const FavouritesScreen = () => {
   }, [setBookData, isFocused]);
 
   const getBookData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/favourites/getFavourites/1', {
+      .get('http://192.168.43.55:5555/favourites/getFavourites/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',

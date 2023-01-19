@@ -1,10 +1,12 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import { Appbar } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import axios from 'axios';
 import TakenBookItem from '../../utils/TakenBookItem';
+
+const {width, height} = Dimensions.get('window');
 
 const TakenBooksScreen = () => {
 
@@ -19,8 +21,15 @@ const TakenBooksScreen = () => {
     }, [isFocused]);
   
     const getData = async () => {
+      let id = 0;
+      if(width > 400){
+        id = 2;
+      }
+      else{
+        id = 1;
+      }
       axios
-        .get('http://192.168.43.55:5555/takenBooks/getTakenBooksInfo/1', {
+        .get('http://192.168.43.55:5555/takenBooks/getTakenBooksInfo/' + id, {
           headers: {
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache',

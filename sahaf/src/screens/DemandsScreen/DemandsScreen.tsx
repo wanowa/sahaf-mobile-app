@@ -1,10 +1,12 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, FlatList, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Appbar} from 'react-native-paper';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import DemandBookItem from '../../utils/DemandBookItem';
 import axios from 'axios';
+
+const {width, height} = Dimensions.get('window');
 
 const DemandsScreen = () => {
 
@@ -24,8 +26,15 @@ const DemandsScreen = () => {
   }, [isFocused, demandBookData]);
 
   const getData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/demands/myDemands/1', {
+      .get('http://192.168.43.55:5555/demands/myDemands/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',

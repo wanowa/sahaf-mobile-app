@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 //import { FlatList } from 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
@@ -22,7 +23,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import CategorizedBookItem from '../../utils/CategorizedBookItem';
 
 
-
+const {width, height} = Dimensions.get('window');
 
 const CategorizedBookScreen = (props: any) => {
   const {category_id, category_name} = props.route.params;
@@ -44,8 +45,15 @@ const CategorizedBookScreen = (props: any) => {
   }, [isFocused]);
 
   const getBookData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/books/getOthersBook/1', {
+      .get('http://192.168.43.55:5555/books/getOthersBook/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',

@@ -18,8 +18,15 @@ const MyAccountScreen = () => {
   const [userData, setUserData] = useState<any>([]);
 
   const getUserData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/users/getUser/1', {
+      .get('http://192.168.43.55:5555/users/getUser/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -42,8 +49,15 @@ const MyAccountScreen = () => {
   };
 
   const getRatingData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/ratings/getRating/1', {
+      .get('http://192.168.43.55:5555/ratings/getRating/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',

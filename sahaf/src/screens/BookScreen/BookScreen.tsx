@@ -35,9 +35,18 @@ const BookScreen = (props: any) => {
   const [isDemand, setIsDemand] = useState<boolean>(false);
   const [isShared, setIsShared] = useState<boolean>(false);
 
+  
+
   const getMyUserData = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/users/getUser/1', {
+      .get('http://192.168.43.55:5555/users/getUser/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -60,8 +69,15 @@ const BookScreen = (props: any) => {
   };
 
   const getMyBooks = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/books/myBooks/1', {
+      .get('http://192.168.43.55:5555/books/myBooks/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -82,8 +98,15 @@ const BookScreen = (props: any) => {
   };
 
   const getFavourites = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/favourites/getFavourites/1', {
+      .get('http://192.168.43.55:5555/favourites/getFavourites/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -106,8 +129,15 @@ const BookScreen = (props: any) => {
   };
 
   const getMyDemands = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/demands/myDemands/1', {
+      .get('http://192.168.43.55:5555/demands/myDemands/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
@@ -128,8 +158,15 @@ const BookScreen = (props: any) => {
   };
 
   const getDemandedsFromMe = async () => {
+    let id = 0;
+    if(width > 400){
+      id = 2;
+    }
+    else{
+      id = 1;
+    }
     axios
-      .get('http://192.168.43.55:5555/demands/demandedsFromYou/1', {
+      .get('http://192.168.43.55:5555/demands/demandedsFromYou/' + id, {
         headers: {
           'Cache-Control': 'no-cache',
           Pragma: 'no-cache',
