@@ -25,7 +25,7 @@ const TabNavigator = () => {
             headerShown: false,
             tabBarActiveTintColor: '#25d6a2',
             tabBarLabelStyle: {fontSize: width*0.035},
-
+            
         }}
     >
     <Tab.Screen

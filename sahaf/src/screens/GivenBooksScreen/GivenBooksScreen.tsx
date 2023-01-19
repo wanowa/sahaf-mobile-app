@@ -1,23 +1,26 @@
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {Appbar} from 'react-native-paper';
 import axios from 'axios';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import GivenBookItem from '../../components/GivenBookItem';
+import GivenBookItem from '../../utils/GivenBookItem';
 
 const GivenBooksScreen = () => {
+
+  const isFocused = useIsFocused();
+
   const navigation = useNavigation<any>();
 
   const [givenBookData, setGivenBookData] = useState<any>([]);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [isFocused]);
 
   const getData = async () => {
     axios
-      .get('http://192.168.1.55:5555/givenBooks/getGivenBooksInfo/1', {
+      .get('http://192.168.43.55:5555/givenBooks/getGivenBooksInfo/1', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',

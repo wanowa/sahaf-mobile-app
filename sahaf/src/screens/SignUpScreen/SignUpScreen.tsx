@@ -1,8 +1,9 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Appbar, Button, TextInput} from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 
 const SignUpScreen = () => {
   const [username, setUsername] = React.useState('');
@@ -12,10 +13,46 @@ const SignUpScreen = () => {
   const [password, setPassword] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
 
+  const [userId, setUserId] = React.useState(0);
+
   const navigation = useNavigation<any>();
 
   const onSignUp = () => {
     console.log('Üye Ol');
+
+    axios
+    .post(
+      'http://192.168.43.55:5555/users/createUser', {
+        address: '',
+        avatar: '',
+        email: email,
+        first_name: name,
+        is_corporate: 0,
+        last_name: surname,
+        password: password,
+        phone_number: phoneNumber,
+        register_date: '',
+        right_to_request_book: 0,
+        user_id: 0,
+        username: username,
+        
+      }
+    )
+    .then(
+      response => {
+        const data = response.data;
+        console.log(data);
+        if (data > 0) {
+          setUserId(data);
+          Alert.alert('Bilgilendirme', 'Kullanıcı Başarıyla Oluşturuldu', [
+            {text: 'Tamam', onPress: () => navigation.navigate('HomeScreen')},
+          ]);
+        }
+      },
+      error => {
+        console.log(error);
+      },
+    );
   };
 
   const onBackAction = () => {

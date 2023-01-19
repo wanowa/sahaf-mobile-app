@@ -1,11 +1,14 @@
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Appbar, SegmentedButtons} from 'react-native-paper';
-import {useNavigation, StackActions} from '@react-navigation/native';
+import {useNavigation, StackActions, useIsFocused} from '@react-navigation/native';
 import axios from 'axios';
-import BookItem from '../../components/BookItem';
+import BookItem from '../../utils/BookItem';
 
 const LibraryScreen = () => {
+
+  const isFocused = useIsFocused();
+
   const navigation = useNavigation<any>();
   const [buttonValue, setButtonValue] = useState<any>('0');
   const [myBooks, setMyBooks] = useState<any>([]);
@@ -18,11 +21,12 @@ const LibraryScreen = () => {
     getSharedBooks();
     getUserData();
     getRatingData();
-  }, []);
+    console.log('LibraryScreen Use Effect');
+  }, [buttonValue, isFocused]);
 
   const getMyBooks = () => {
     axios
-      .get('http://192.168.1.55:5555/books/myBooks/1', {
+      .get('http://192.168.43.55:5555/books/myBooks/1', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -43,7 +47,7 @@ const LibraryScreen = () => {
   };
   const getSharedBooks = () => {
     axios
-      .get('http://192.168.1.55:5555/books/myBooksInMarket/1', {
+      .get('http://192.168.43.55:5555/books/myBooksInMarket/1', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -64,7 +68,7 @@ const LibraryScreen = () => {
   };
   const getUserData = async () => {
     axios
-      .get('http://192.168.1.55:5555/users/getUser/1', {
+      .get('http://192.168.43.55:5555/users/getUser/1', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -86,7 +90,7 @@ const LibraryScreen = () => {
 
   const getRatingData = async () => {
     axios
-      .get('http://192.168.1.55:5555/ratings/getRating/1', {
+      .get('http://192.168.43.55:5555/ratings/getRating/1', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -106,10 +110,6 @@ const LibraryScreen = () => {
       .finally(function () {});
   };
 
-  const onBackAction = () => {
-    // const popAction = StackActions.pop(0);
-    // navigation.dispatch(popAction);
-  };
 
   const onAddBook = () => {
     navigation.navigate('AddBookScreen');

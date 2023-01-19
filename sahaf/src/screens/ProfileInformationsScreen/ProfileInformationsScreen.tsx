@@ -1,11 +1,15 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, { useEffect, useState } from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import { Appbar, Button, TextInput } from 'react-native-paper';
 import axios from 'axios';
 import { withRepeat } from 'react-native-reanimated';
 
+
+
 const ProfileInformationsScreen = () => {
+
+  const isFocused = useIsFocused();
 
   const [userFetched, setUserFetched] = useState(false);
   const [userData, setUserData] = useState<any>([]);
@@ -28,7 +32,7 @@ const ProfileInformationsScreen = () => {
 
   const getUserData = async () => {
     axios
-      .get('http://192.168.1.55:5555/users/getUser/1', {
+      .get('http://192.168.43.55:5555/users/getUser/1', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -66,6 +70,7 @@ const ProfileInformationsScreen = () => {
   }
 
   useEffect  (  () => {
+        console.log('ProfileInformationScreen useEffect');   
         getUserData()
         
         setUsername(userData.username);
@@ -74,7 +79,7 @@ const ProfileInformationsScreen = () => {
         setEmail(userData.email);
         setPhoneNumber(userData.phone_number);
 
-  }, [userData]);
+  }, [isFocused, userData]);
 
   return (
     <View>

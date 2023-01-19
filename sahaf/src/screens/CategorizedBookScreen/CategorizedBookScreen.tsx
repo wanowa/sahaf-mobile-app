@@ -13,14 +13,19 @@ import {Appbar, Avatar, Searchbar, TextInput} from 'react-native-paper';
 import BookItem from '../../utils/BookItem';
 import axios, {isCancel, AxiosError} from 'axios';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {useNavigation, NavigationContainer, useIsFocused} from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationContainer,
+  useIsFocused,
+} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import CategorizedBookItem from '../../utils/CategorizedBookItem';
 
 
-const MainScreen = (props: any) => 
-{
 
-  //const {userId} = props.route.params;
+
+const CategorizedBookScreen = (props: any) => {
+  const {category_id, category_name} = props.route.params;
 
   const isFocused = useIsFocused();
 
@@ -29,31 +34,28 @@ const MainScreen = (props: any) =>
   const [isLoading, setLoading] = useState(true);
 
   const [bookData, setBookData] = useState<any>([]);
-  const [filteredBookData, setFilteredBookData] = useState<any[]>([]);
-  const [search, setSearch] = useState('');
 
   //http://192.168.43.55:5555/books/getOthersBook/2
 
   useEffect(() => {
+    console.log(category_name);
     getBookData();
     setLoading(false);
   }, [isFocused]);
 
   const getBookData = async () => {
-    //console.log('----' + userId + '----');
     axios
       .get('http://192.168.43.55:5555/books/getOthersBook/1', {
         headers: {
           'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Expires': '0',
+          Pragma: 'no-cache',
+          Expires: '0',
         },
       })
       .then(function (response) {
         // handle success
         const data = response.data;
         setBookData(data);
-        setFilteredBookData(data);
         //console.log(data);
       })
       .catch(function (error) {
@@ -65,43 +67,13 @@ const MainScreen = (props: any) =>
       });
   };
 
-  const searchFilterFunction = (text: any) => {
-    // Check if searched text is not blank
-    if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource
-      // Update FilteredDataSource
-      const newData = bookData.filter(function (item: any) {
-        const itemData = item.book_name
-          ? item.book_name.toUpperCase()
-          : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setFilteredBookData(newData);
-      setSearch(text);
-    } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
-      setFilteredBookData(bookData);
-      setSearch(text);
-    }
-  };
-
   return (
     <SafeAreaProvider>
       <View style={styles.page}>
-        <Appbar.Header style={styles.appbar}>
-          <Searchbar
-            placeholder="Ara..."
-            onChangeText={text => searchFilterFunction(text)}
-            value={search}
-            style={[styles.input, {backgroundColor: '#fff'}, {marginBottom:5}]}
-            elevation={5}
-            
-          />
-          {/* <Appbar.Content title="Giriş Yap" style={styles.appbar_text} /> */}
-        </Appbar.Header>
+      <Appbar.Header style={styles.appbar}>
+        <Appbar.BackAction onPress={() => navigation.navigate('Tabs', {screen: 'CategoriesScreen'})} />
+        <Appbar.Content title={category_name} style={styles.appbar_text} />
+      </Appbar.Header>
         <View>
           {isLoading ? (
             <ActivityIndicator size="large" />
@@ -109,13 +81,16 @@ const MainScreen = (props: any) =>
             <View>
               <FlatList
                 contentContainerStyle={{paddingBottom: 250}}
-                data={filteredBookData}
+                data={bookData}
                 keyExtractor={item => item.book_id}
                 showsVerticalScrollIndicator={false}
                 //nestedScrollEnabled
                 renderItem={({item}) => (
                   <View>
-                    <BookItem bookData={item} />
+                    <CategorizedBookItem
+                      bookData={item}
+                      category_id={category_id}
+                    />
                   </View>
                 )}
               />
@@ -127,7 +102,7 @@ const MainScreen = (props: any) =>
   );
 };
 
-export default MainScreen;
+export default CategorizedBookScreen;
 
 const styles = StyleSheet.create({
   page: {
@@ -139,8 +114,8 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     width: '100%',
     zIndex: 1,
-    backgroundColor: '#f2f2f2',
-    elevation: 0,
+    borderBottomWidth: 2,
+    borderBottomColor: '#e0e0e0',
   },
   appbar_text: {
     marginLeft: 10,

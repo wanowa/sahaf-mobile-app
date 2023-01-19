@@ -1,12 +1,14 @@
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import {Appbar} from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import DemandedBookItem from '../../components/DemandedBookItem';
+import DemandedBookItem from '../../utils/DemandedBookItem';
 import axios from 'axios';
 
 const DemandedsScreen = () => {
+  
+    const isFocused = useIsFocused();
 
     const navigation = useNavigation<any>();
 
@@ -18,11 +20,11 @@ const DemandedsScreen = () => {
   
     useEffect(() => {
       getData();
-    }, []);
+    }, [isFocused, demandedBookData]);
   
     const getData = async () => {
       axios
-        .get('http://192.168.1.55:5555/demands/demandedsFromYou/1', {
+        .get('http://192.168.43.55:5555/demands/demandedsFromYou/1', {
           headers: {
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache',

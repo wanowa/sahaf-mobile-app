@@ -26,13 +26,16 @@ const DemandBookItem = (props: any) => {
 
   const getBookData = async () => {
     axios
-      .get('http://192.168.1.55:5555/books/getBook/' + demandBookData.book_id, {
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Expires': '0',
+      .get(
+        'http://192.168.43.55:5555/books/getBook/' + demandBookData.book_id,
+        {
+          headers: {
+            'Cache-Control': 'no-cache',
+            Pragma: 'no-cache',
+            Expires: '0',
+          },
         },
-      })
+      )
       .then(function (response) {
         // handle success
         const data = response.data;
@@ -49,7 +52,7 @@ const DemandBookItem = (props: any) => {
   const getUserData = async () => {
     axios
       .get(
-        'http://192.168.1.55:5555/users/getUser/' +
+        'http://192.168.43.55:5555/users/getUser/' +
           demandBookData.requested_users_id,
       )
       .then(function (response) {
@@ -70,7 +73,7 @@ const DemandBookItem = (props: any) => {
   const getRatingData = async () => {
     axios
       .get(
-        'http://192.168.1.55:5555/ratings/getRating/' +
+        'http://192.168.43.55:5555/ratings/getRating/' +
           demandBookData.requested_users_id,
       )
       .then(function (response) {
@@ -103,7 +106,22 @@ const DemandBookItem = (props: any) => {
     });
   };
 
-  const onCancel = () => {};
+  const onCancel = () => {
+    console.log('onCancel');
+
+    axios
+      .post(
+        'http://192.168.43.55:5555/demands/undemandBook?bookId=' + bookData.book_id + '&userId=1')
+      .then(
+        response => {
+          console.log(response.data);
+          //setIsDemand(false);
+        },
+        error => {
+          console.log(error);
+        },
+      );
+  };
 
   return (
     <View style={styles.root}>

@@ -1,4 +1,4 @@
-import {Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Linking, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
@@ -86,6 +86,7 @@ const AddBookScreen = () => {
   const [isCategoryEmpty, setIsCategoryEmpty] = useState(false);
 
   useEffect(() => {
+    console.log('AddBookScreen useEffect');
     if (book_name === '') {
       setIsBookNameEmpty(true);
     } else {
@@ -182,11 +183,25 @@ const AddBookScreen = () => {
       console.log('-----153' + items[category - 1].label + '-----');
       const category_name = items[category - 1].label;
       add_book(book, category_name);
+      Alert.alert(
+        'Bilgilendirme',
+        'Kitap başarıyla eklendi.',
+        [
+          {
+            text: 'Tamam',
+            onPress: () => {
+              navigation.navigate('Tabs', {screen: 'LibraryScreen'});
+            },
+          },
+        ],
+        {cancelable: false},
+      )
+      
     }
   };
 
   const add_book = (book: any, category_name: any) => {
-    // fetch('http://192.168.1.55:5555/books/addBook', {
+    // fetch('http://192.168.43.55:5555/books/addBook', {
     //   method: 'POST',
     //   body: JSON.stringify({
     //     category_name: category_name,
@@ -210,7 +225,7 @@ const AddBookScreen = () => {
 
     // axios({
     //   method: 'post',
-    //   url: 'http://192.168.1.55:5555/books/addBook',
+    //   url: 'http://192.168.43.55:5555/books/addBook',
     //   data: {
     //     category_name: JSON.stringify(category_name),
     //     book: JSON.stringify(book),
@@ -232,12 +247,12 @@ const AddBookScreen = () => {
     //   });
 
 
-    // http://192.168.1.55:5555/books/addBook?category_name=" + category_name -H "accept: */*" -H "Content-Type: application/json" -d "{ \"author\": \"Arthur\", \"book_id\": 0, \"book_isbn\": \"9786053480563\", \"book_name\": \"Sherlock\", \"category_id\": 0, \"cover_photo\": \"\", \"description\": \"\", \"is_in_market\": 0, \"publisher\": \"Martı\", \"user_id\": 1}
+    // http://192.168.43.55:5555/books/addBook?category_name=" + category_name -H "accept: */*" -H "Content-Type: application/json" -d "{ \"author\": \"Arthur\", \"book_id\": 0, \"book_isbn\": \"9786053480563\", \"book_name\": \"Sherlock\", \"category_id\": 0, \"cover_photo\": \"\", \"description\": \"\", \"is_in_market\": 0, \"publisher\": \"Martı\", \"user_id\": 1}
 
 
     axios
       .post(
-        'http://192.168.1.55:5555/books/addBook?category_name=' + category_name,
+        'http://192.168.43.55:5555/books/addBook?category_name=' + category_name,
         { 
           author: author,
           book_id: 0,
@@ -365,7 +380,7 @@ const AddBookScreen = () => {
         <Button
           style={styles.button}
           mode="text"
-          children="Kaydet"
+          children="Kitaplığıma Ekle"
           //mode="outlined"
           buttonColor="#25d6a2"
           textColor="white"

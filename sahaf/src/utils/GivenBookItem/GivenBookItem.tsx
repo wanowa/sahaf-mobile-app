@@ -60,7 +60,7 @@ const GivenBookItem = (props: any) => {
 
   const getBookData = async () => {
     axios
-      .get('http://192.168.1.55:5555/books/getBook/' + givenBookData.book_id, {
+      .get('http://192.168.43.55:5555/books/getBook/' + givenBookData.book_id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -83,7 +83,7 @@ const GivenBookItem = (props: any) => {
   const getUserData = async () => {
     axios
       .get(
-        'http://192.168.1.55:5555/users/getUser/' + givenBookData.recipient_id, {
+        'http://192.168.43.55:5555/users/getUser/' + givenBookData.recipient_id, {
           headers: {
             'Cache-Control': 'no-cache',
             'Pragma': 'no-cache',
@@ -108,7 +108,7 @@ const GivenBookItem = (props: any) => {
   const getRatingData = async () => {
     axios
       .get(
-        'http://192.168.1.55:5555/ratings/getRating/' +
+        'http://192.168.43.55:5555/ratings/getRating/' +
           givenBookData.recipient_id, {
             headers: {
               'Cache-Control': 'no-cache',
@@ -145,7 +145,7 @@ const GivenBookItem = (props: any) => {
         <ActivityIndicator size="large" />
       ) : (
         <>
-          <Text>{givenBookData.deal_date}</Text>
+          <Text style={{color:'#a4a4a4', marginLeft: 10}}>{givenBookData.deal_date}</Text>
           <View style={styles.root}>
             <Image
               style={styles.image}

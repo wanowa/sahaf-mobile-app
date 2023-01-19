@@ -1,7 +1,7 @@
 import {Dimensions, Pressable, StyleSheet, Text, View, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Appbar, Avatar, List, Searchbar} from 'react-native-paper';
-import {StackActions, useNavigation} from '@react-navigation/native';
+import {StackActions, useIsFocused, useNavigation} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,12 +11,15 @@ const {width, height} = Dimensions.get('window');
 const MyAccountScreen = () => {
   const navigation = useNavigation<any>();
 
+  const isFocused = useIsFocused();
+
+
   const [ratingData, setRatingData] = useState<any>([]);
   const [userData, setUserData] = useState<any>([]);
 
   const getUserData = async () => {
     axios
-      .get('http://192.168.1.55:5555/users/getUser/1', {
+      .get('http://192.168.43.55:5555/users/getUser/1', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -40,7 +43,7 @@ const MyAccountScreen = () => {
 
   const getRatingData = async () => {
     axios
-      .get('http://192.168.1.55:5555/ratings/getRating/1', {
+      .get('http://192.168.43.55:5555/ratings/getRating/1', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -65,7 +68,8 @@ const MyAccountScreen = () => {
   useEffect(() => {
     getUserData();
     getRatingData();
-  }, []);
+  }, [setUserData, setRatingData, isFocused]);
+
 
   const onAldiklarim = () => {
     navigation.navigate('TakenBooksScreen');
@@ -140,7 +144,7 @@ const MyAccountScreen = () => {
             </View>
           </View>
           <Text style={styles.kitapHakki}>
-            Kalan Kitap Alma Hakkınız: {userData.right_to_request_book}
+            Kalan Kitap Talep Etme Hakkınız: {userData.right_to_request_book}
           </Text>
         </View>
 
@@ -185,7 +189,7 @@ const MyAccountScreen = () => {
           <List.Item
             style={styles.listItem}
             title={
-              <Text style={{fontSize: width * 0.05}}>Talep Edilenler</Text>
+              <Text style={{fontSize: width * 0.05}}>Benden Talep Edilenler</Text>
             }
             left={props => (
               <Icon

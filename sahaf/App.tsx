@@ -21,6 +21,10 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import Navigation from './src/navigation';
 import TabNavigator from './src/navigation/TabNavigator';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { changeId } from './src/actions/id';
+
 
 const App: () => any = () => {
   let isAuthenticated = false;

@@ -21,6 +21,7 @@ import DemandsScreen from '../screens/DemandsScreen';
 import DemandedsScreen from '../screens/DemandedsScreen';
 import AddBookScreen from '../screens/AddBookScreen';
 import CameraScreen from '../screens/CameraScreen';
+import CategorizedBookScreen from '../screens/CategorizedBookScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,7 @@ const Navigation = () => {
       <Stack.Screen name="DemandedsScreen" component={DemandedsScreen} />
       <Stack.Screen name="AddBookScreen" component={AddBookScreen} />
       <Stack.Screen name="CameraScreen" component={CameraScreen} />
+      <Stack.Screen name="CategorizedBookScreen" component={CategorizedBookScreen} />
     </Stack.Navigator>
   );
 };

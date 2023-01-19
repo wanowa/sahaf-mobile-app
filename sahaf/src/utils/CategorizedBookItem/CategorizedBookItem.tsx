@@ -14,9 +14,7 @@ import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-
-const { width, height } = Dimensions.get('window')
-
+const {width, height} = Dimensions.get('window');
 
 interface BookItemProps {
   userData: {
@@ -52,7 +50,7 @@ interface BookItemProps {
   };
 }
 
-const BookItem = (props: any) => {
+const CategorizedBookItem = (props: any) => {
   const navigation = useNavigation<any>();
 
   const [ratingData, setRatingData] = useState<any>([]);
@@ -60,7 +58,7 @@ const BookItem = (props: any) => {
 
   const [isLoading, setLoading] = useState(true);
 
-  const {bookData} = props;
+  const {bookData, category_id} = props;
 
   //console.log('User Data : ' + userData);
   //console.log('Book Data : ' + bookData);
@@ -68,11 +66,11 @@ const BookItem = (props: any) => {
 
   const getUserData = async () => {
     axios
-      .get('http://192.168.1.55:5555/users/getUser/' + bookData.user_id, {
+      .get('http://192.168.43.55:5555/users/getUser/' + bookData.user_id, {
         headers: {
           'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Expires': '0',
+          Pragma: 'no-cache',
+          Expires: '0',
         },
       })
       .then(function (response) {
@@ -92,11 +90,11 @@ const BookItem = (props: any) => {
 
   const getRatingData = async () => {
     axios
-      .get('http://192.168.1.55:5555/ratings/getRating/' + bookData.user_id, {
+      .get('http://192.168.43.55:5555/ratings/getRating/' + bookData.user_id, {
         headers: {
           'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Expires': '0',
+          Pragma: 'no-cache',
+          Expires: '0',
         },
       })
       .then(function (response) {
@@ -129,11 +127,9 @@ const BookItem = (props: any) => {
   };
 
   return (
-    <Pressable style={styles.root} onPress={onPress}>
-      {isLoading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <>
+    <>
+      {category_id === bookData.category_id ? (
+        <Pressable style={styles.root} onPress={onPress}>
           <Image
             style={styles.image}
             source={{
@@ -147,7 +143,7 @@ const BookItem = (props: any) => {
               {bookData.book_name}
             </Text>
             <View>
-              <Text style={styles.yayineviYazar}>Yazar:      {bookData.author}</Text>
+              <Text style={styles.yayineviYazar}>Yazar: {bookData.author}</Text>
               <Text style={styles.yayineviYazar}>
                 Yayınevi: {bookData.publisher}
               </Text>
@@ -176,18 +172,20 @@ const BookItem = (props: any) => {
                     </Text>
                   </View>
                 ) : (
-                  <Text style={[styles.numOfRating, {marginLeft: 10}]}>Değerlendirme Yok</Text>
+                  <Text style={[styles.numOfRating, {marginLeft: 10}]}>
+                    Değerlendirme Yok
+                  </Text>
                 )}
               </View>
             </View>
           </View>
-        </>
-      )}
-    </Pressable>
+        </Pressable>
+      ) : null}
+    </>
   );
 };
 
-export default BookItem;
+export default CategorizedBookItem;
 
 const styles = StyleSheet.create({
   root: {
@@ -253,7 +251,7 @@ const styles = StyleSheet.create({
     fontSize: width * 0.04,
     fontWeight: '600',
     numberOfLines: 2,
-    color: '#F4C430'
+    color: '#F4C430',
   },
   numOfRating: {
     fontSize: width * 0.04,

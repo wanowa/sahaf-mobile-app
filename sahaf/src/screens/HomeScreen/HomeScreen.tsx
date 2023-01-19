@@ -48,7 +48,7 @@ const HomeScreen = () => {
         <View style={styles.tamamen}>
           <Text style={styles.interRegular}>
             Tamamen {''}
-            <Text style={[styles.interSemiBold, {fontSize: width * 0.04}]}>
+            <Text style={[styles.interSemiBold, {fontSize: width * 0.05}]}>
               Ücretsiz!
             </Text>
           </Text>
@@ -69,7 +69,7 @@ const HomeScreen = () => {
           </View>
           <Text style={[styles.interRegular, {marginTop: -2}]}>
             Komisyon {''}
-            <Text style={[styles.interSemiBold, {fontSize: width * 0.06}]}>
+            <Text style={[styles.interSemiBold, {fontSize: width * 0.05}]}>
               Yok
             </Text>
           </Text>

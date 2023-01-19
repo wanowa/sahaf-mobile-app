@@ -19,7 +19,7 @@ const CameraScreen = (props: any) => {
   const [bookData, setBookData] = useState<any>();
 
   useEffect(() => {
-    
+    console.log('CameraScreen useEffect');
   }, [bookIsbn]);
 
   const onSuccess = (e: any) => {

@@ -1,5 +1,6 @@
 import {
   ActivityIndicator,
+  Alert,
   Image,
   Pressable,
   StyleSheet,
@@ -7,47 +8,13 @@ import {
   View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {Avatar} from 'react-native-paper';
+import {Avatar, Button} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-interface BookItemProps {
-  userData: {
-    user_id?: any;
-    first_name?: any;
-    last_name?: any;
-    email?: any;
-    username?: any;
-    password?: any;
-    phone_number?: any;
-    is_corporate?: any;
-    register_date?: any;
-    avatar?: any;
-    address?: any;
-    right_to_request_book?: any;
-  };
-  bookData: {
-    book_id?: Number;
-    user_id?: Number;
-    book_name?: String;
-    author?: String;
-    publisher?: String;
-    category_id?: Number;
-    cover_photo?: String;
-    description?: String;
-    book_isbn?: String;
-    is_in_market?: Number;
-  };
-  ratingData: {
-    user_id?: any;
-    number_of_rating?: any;
-    score?: any;
-  };
-}
-
-const TakenBookItem = (props: any) => {
+const DemandedBookItem = (props: any) => {
   const navigation = useNavigation<any>();
 
   const [bookData, setBookData] = useState<any>([]);
@@ -56,11 +23,11 @@ const TakenBookItem = (props: any) => {
 
   const [isLoading, setLoading] = useState(true);
 
-  const {takenBookData} = props;
+  const {demandedBookData} = props;
 
   const getBookData = async () => {
     axios
-      .get('http://192.168.1.55:5555/books/getBook/' + takenBookData.book_id, {
+      .get('http://192.168.43.55:5555/books/getBook/' + demandedBookData.book_id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -82,7 +49,7 @@ const TakenBookItem = (props: any) => {
 
   const getUserData = async () => {
     axios
-      .get('http://192.168.1.55:5555/users/getUser/' + takenBookData.giver_id, {
+      .get('http://192.168.43.55:5555/users/getUser/' + demandedBookData.user_id, {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -106,15 +73,13 @@ const TakenBookItem = (props: any) => {
 
   const getRatingData = async () => {
     axios
-      .get(
-        'http://192.168.1.55:5555/ratings/getRating/' + takenBookData.giver_id, {
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache',
-            'Expires': '0',
-          },
-        }
-      )
+      .get('http://192.168.43.55:5555/ratings/getRating/' + demandedBookData.user_id, {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+        },
+      })
       .then(function (response) {
         // handle success
         const data = response.data;
@@ -137,14 +102,96 @@ const TakenBookItem = (props: any) => {
     setLoading(false);
   }, []);
 
+  const onPress = () => {
+    navigation.navigate('BookScreen', {
+      bookData: bookData,
+      userData: userData,
+      ratingData: ratingData,
+    });
+  };
+
+  const onKabulEt = () => {
+    console.log('onKabulEt');
+
+    axios
+    .post('http://192.168.43.55:5555/books/shareBook?bookId=' + bookData.book_id + '&targetUserId=' + demandedBookData.user_id)
+    .then(
+      response => {
+        //console.log(response.data);
+        //setIsDemand(false);
+      },
+      error => {
+        console.log(error);
+      },
+    );
+
+    Alert.alert(
+      'Teşekkürler',
+      'Kitap en kısa süre içerisinde kullanıcıya ulaştırılacaktır.',
+      [
+        {
+          text: 'Tamam',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+      ],
+      {cancelable: false},
+    );
+  };
+
+  const onReddet = () => {
+    console.log('onTalepIptal');
+
+    axios
+    .post('http://192.168.43.55:5555/demands/undemandBook?bookId=' + bookData.book_id + '&userId=' + demandedBookData.user_id)
+    .then(
+      response => {
+        console.log(response.data);
+        //setIsDemand(false);
+      },
+      error => {
+        console.log(error);
+      },
+    );
+  };
+
   return (
-    <View>
-      {isLoading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <>
-          <Text>{takenBookData.deal_date}</Text>
-          <View style={styles.root}>
+    <View style={styles.root}>
+      <View style={styles.user}>
+        <Avatar.Image
+          style={styles.avatar}
+          size={48}
+          source={{
+            uri: userData.avatar,
+          }}
+        />
+        <View style={styles.rightUserContainer}>
+          <Text style={styles.username}>{userData.username}</Text>
+          {ratingData ? (
+            <View style={styles.ratingsContainer}>
+              <FontAwesome
+                style={styles.star}
+                name="star"
+                size={20}
+                color={'#F4C430'}
+              />
+              <Text style={styles.ratingScore}>{ratingData.score}</Text>
+              <Text style={styles.numOfRating}>
+                ({ratingData.number_of_rating})
+              </Text>
+            </View>
+          ) : (
+            <Text style={[styles.numOfRating, {marginLeft: 10}]}>
+              Değerlendirme Yok
+            </Text>
+          )}
+        </View>
+      </View>
+      <Pressable style={styles.pressableContainer} onPress={onPress}>
+        {isLoading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <>
             <Image
               style={styles.image}
               source={{
@@ -165,55 +212,45 @@ const TakenBookItem = (props: any) => {
                   Yayınevi: {bookData.publisher}
                 </Text>
               </View>
-              <View style={styles.user}>
-                <Avatar.Image
-                  style={styles.avatar}
-                  size={48}
-                  source={{
-                    uri: userData.avatar,
-                  }}
+              <View style={styles.buttons}>
+                <Button
+                  style={styles.button}
+                  children="Kabul Et"
+                  mode="text"
+                  buttonColor="#25d6a2"
+                  textColor="white"
+                  onPress={onKabulEt}
                 />
-                <View style={styles.rightUserContainer}>
-                  <Text style={styles.username}>{userData.username}</Text>
-                  {ratingData ? (
-                    <View style={styles.ratingsContainer}>
-                      <FontAwesome
-                        style={styles.star}
-                        name="star"
-                        size={20}
-                        color={'#F4C430'}
-                      />
-                      <Text style={styles.ratingScore}>{ratingData.score}</Text>
-                      <Text style={styles.numOfRating}>
-                        ({ratingData.number_of_rating})
-                      </Text>
-                    </View>
-                  ) : (
-                    <Text style={[styles.numOfRating, {marginLeft: 10}]}>
-                      Değerlendirme Yok
-                    </Text>
-                  )}
-                </View>
+                <Button
+                  style={styles.button}
+                  children="Reddet"
+                  mode="outlined"
+                  buttonColor="white"
+                  textColor="#25d6a2"
+                  onPress={onReddet}
+                />
               </View>
             </View>
-          </View>
-        </>
-      )}
+          </>
+        )}
+      </Pressable>
     </View>
   );
 };
 
-export default TakenBookItem;
+export default DemandedBookItem;
 
 const styles = StyleSheet.create({
   root: {
-    flexDirection: 'row',
     borderWidth: 1,
     borderColor: '#d1d1d1',
     borderRadius: 10,
     backgroundColor: '#fff',
     width: '100%',
     marginVertical: 5,
+  },
+  pressableContainer: {
+    flexDirection: 'row',
   },
   image: {
     width: 100,
@@ -241,13 +278,15 @@ const styles = StyleSheet.create({
   },
   user: {
     flexDirection: 'row',
-    marginTop: 5,
+    marginTop: 10,
+    marginLeft: 20,
   },
   avatar: {
     backgroundColor: '#fff',
   },
   rightUserContainer: {
     flexDirection: 'column',
+    
   },
   username: {
     fontWeight: '600',
@@ -276,5 +315,16 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     marginLeft: 5,
     color: '#929292',
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  button: {
+    marginTop: 25,
+    marginLeft: 0,
+    borderColor: '#25D6A2',
+    width: '45%',
+    alignSelf: 'center',
   },
 });

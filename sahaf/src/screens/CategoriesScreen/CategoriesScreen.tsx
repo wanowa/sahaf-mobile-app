@@ -2,18 +2,22 @@ import {StyleSheet, Text, View, ScrollView, Dimensions} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {Appbar, List} from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 
 
 const { width, height } = Dimensions.get('window')
 
 
 const CategoriesScreen = () => {
-  const [categoriesData, setCategoriesData] = useState([]);
+
+  const navigation = useNavigation<any>();
+
+  const [categoriesData, setCategoriesData] = useState<any>([]);
   const [isLoading, setLoading] = useState(true);
 
   const getCategories = async () => {
     axios
-      .get('http://192.168.1.55:5555/categories/getCategories/', {
+      .get('http://192.168.43.55:5555/categories/getCategories/', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
@@ -72,6 +76,13 @@ const CategoriesScreen = () => {
               titleStyle={{fontSize: width*0.05, marginVertical: 5}}
               title={item.category_name}
               key={item.category_id}
+              onPress={() => {
+                console.log(item.category_id);
+                navigation.navigate('CategorizedBookScreen', {
+                  category_id: item.category_id,
+                  category_name: categoriesData[item.category_id - 1].category_name,
+                });
+              }}
             />
           );
         })}

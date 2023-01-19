@@ -7,6 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 const ChangePasswordScreen = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [passwordAgain, setPasswordAgain] = React.useState('');
 
   const navigation = useNavigation<any>();
 
@@ -17,18 +18,22 @@ const ChangePasswordScreen = () => {
 
   const onChangePassword = () => {
     console.log('Şifremi Değiştir');
-    Alert.alert(
-        'Bilgilendirme',
-        'Şifreniz başarıyla değiştirildi.',
-        [
-            {
-                text: 'Tamam',
-                onPress: () => navigation.navigate('SettingScreen'),
-                style: 'cancel',
-            },
-        ],
-    );
-    
+    if (password != passwordAgain) {
+      Alert.alert('Uyarı', 'Girdiğiniz şifreler uyuşmuyor.', [
+        {
+          text: 'Tamam',
+          style: 'cancel',
+        },
+      ]);
+    } else {
+      Alert.alert('Bilgilendirme', 'Şifreniz başarıyla değiştirildi.', [
+        {
+          text: 'Tamam',
+          onPress: () => navigation.navigate('SettingScreen'),
+          style: 'cancel',
+        },
+      ]);
+    }
   };
 
   return (
@@ -51,8 +56,8 @@ const ChangePasswordScreen = () => {
             }
           />
           <TextInput
-            value={password}
-            onChangeText={setPassword}
+            value={passwordAgain}
+            onChangeText={setPasswordAgain}
             style={styles.input}
             label="Yeni Şifre (Tekrar)"
             mode="outlined"

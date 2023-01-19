@@ -2,12 +2,15 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Appbar } from 'react-native-paper';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
-import BookItem from '../../components/BookItem';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import BookItem from '../../utils/BookItem';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 const FavouritesScreen = () => {
+  
+  const isFocused = useIsFocused();
+
 
   const navigation = useNavigation<any>();
 
@@ -15,12 +18,13 @@ const FavouritesScreen = () => {
 
 
   useEffect(() => {
+    console.log('FavouritesScreen useEffect');
     getBookData();
-  }, []);
+  }, [setBookData, isFocused]);
 
   const getBookData = async () => {
     axios
-      .get('http://192.168.1.55:5555/favourites/getFavourites/1', {
+      .get('http://192.168.43.55:5555/favourites/getFavourites/1', {
         headers: {
           'Cache-Control': 'no-cache',
           'Pragma': 'no-cache',
